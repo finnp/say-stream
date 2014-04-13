@@ -1,36 +1,27 @@
-
-var Stream = require('stream');
+var Writable = require('stream').Writable;
+var util = require('util');
 var exec = require('child_process').exec;
 
-module.exports = function(voice) {
-
-  voice = voice || "Zarvox";
-
-  var say = exec("trap 'exit' INT; while read line; do echo $line; echo $line | say -v " + voice + " ; done" ,
-    function (error, stdout, stderr) {
-      if (error !== null) {
-        console.log('exec error: ' + error);
-      }
+var Say = function (voice, options) {
+  Writable.call(this, options);
+  var voice = voice || "Zarvox";
+  this.say = exec("trap 'exit' INT; while read line; do echo $line; echo $line | say -v " + voice + " ; done" ,
+  function (error, stdout, stderr) {
+    if (error !== null) {
+      console.error('exec error: ' + error);
+    }
   });
+}
 
-  var stream = new Stream();
-  stream.readable = stream.writable = true
+util.inherits(Say, Writable);
 
-  stream.write = function(data) {
-    say.stdin.write(data.toString() + "\n");
-    return true;
-  };
-
-  stream.end = function(data) {
-    say.stdin.end();
-  };
-
-  say.stdout.on('data', function(data) {
-    stream.emit('data', data);
-  });
-  say.stdout.on('end', function() {
-    stream.emit('end');
-  });
-
-  return stream;
+Say.prototype._write = function(data, encoding, done) {
+  this.say.stdin.write(data.toString() + "\n");
+  done();
 };
+
+Say.prototype.kill = function() {
+  this.say.kill();
+};
+
+exports.Say = Say;

@@ -1,7 +1,7 @@
 {
   "name": "say-stream",
   "version": "0.0.1",
-  "description": "A module for streaming stuff through macs 'say' command",
+  "description": "A module for streaming stuff into macs 'say' command",
   "main": "index.js",
   "scripts": {
     "test": "mocha ./test.js"

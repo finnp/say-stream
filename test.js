@@ -1,12 +1,13 @@
 var assert = require('assert');
 var say = require('./index.js');
+var Say = require('./index.js').Say;
 var promptly = require('promptly');
 
 
 describe('say', function() {
   this.timeout(0);
   describe('robot', function() {
-    var robot = say();
+    var robot = new Say();
     it('should friendly great the user', function(done) {
       console.log('');
       console.log('You should now hear a robot greeting you.');
@@ -21,7 +22,7 @@ describe('say', function() {
     });
   });
   describe('victoria', function() {
-    var victoria = say('victoria');
+    var victoria = new Say('victoria');
     it('should be nice to have a computer that will talk to you', function(done) {
       var question = 'Isn\'t it nice to have a computer that will talk to you?';
       victoria.write(question);
