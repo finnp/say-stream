@@ -1,27 +1,21 @@
-var Writable = require('stream').Writable;
+var Transform = require('stream').Transform;
 var util = require('util');
 var exec = require('child_process').exec;
 
-var Say = function (voice, options) {
-  Writable.call(this, options);
-  var voice = voice || "Zarvox";
-  this.say = exec("trap 'exit' INT; while read line; do echo $line; echo $line | say -v " + voice + " ; done" ,
-  function (error, stdout, stderr) {
-    if (error !== null) {
-      console.error('exec error: ' + error);
-    }
-  });
+var Say;
+
+Say = function (voice, options) {
+  Transform.call(this, options);
+  this.voice = voice || 'Zarvox';
 }
 
-util.inherits(Say, Writable);
+util.inherits(Say, Transform);
 
-Say.prototype._write = function(data, encoding, done) {
-  this.say.stdin.write(data.toString() + "\n");
-  done();
-};
-
-Say.prototype.kill = function() {
-  this.say.kill();
+Say.prototype._transform = function(data, encoding, done) {
+  var child = exec('say --interactive="" -v ' + this.voice + ' "' + data.toString() + '"');
+  child.stderr.pipe(process.stderr);
+  child.stdout.on('data', this.push.bind(this));
+  child.stdout.on('finish', done);
 };
 
 exports.Say = Say;
