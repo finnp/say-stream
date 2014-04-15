@@ -12,7 +12,8 @@ Say = function (voice, options) {
 util.inherits(Say, Transform);
 
 Say.prototype._transform = function(data, encoding, done) {
-  var child = exec('say --interactive="" -v ' + this.voice + ' "' + data.toString() + '"');
+  var text = data.toString().replace(/"/g, '\\"').replace(/'/g, "\\'");
+  var child = exec('say --interactive="" -v ' + this.voice + ' "' + text + '"');
   child.stderr.pipe(process.stderr);
   child.stdout.on('data', this.push.bind(this));
   child.stdout.on('finish', done);

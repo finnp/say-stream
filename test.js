@@ -36,7 +36,7 @@ describe('Say', function() {
     var choir = new Say('cellos');
     it('should display the lyrics line by line as they are singing', function(done) {
       console.log('You should now here the choir and see the lines as they are singing them');
-      var lyrics = 'Because I am happy\nYour mummy is happy too\nlalala';
+      var lyrics = 'la di la di la di da\nla di la di la di da\nla di la di la di da';
       choir.on('data', function(chunk) {
         process.stdout.write(chunk);
       });
