@@ -23,5 +23,8 @@
   "devDependencies": {
     "mocha": "^1.18.2",
     "promptly": "^0.2.0"
+  },
+  "dependencies": {
+    "commandliner": "0.0.1"
   }
 }

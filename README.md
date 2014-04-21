@@ -8,7 +8,7 @@ Install it via `npm install say-stream` and make sure to test it with `npm test`
 
  ```javascript
 	 // A robot speaking everything from stdin
-	var Say = require('say-stream').Say;
+	var Say = require('say-stream');
 	var robot = new Say();
 	process.stdin.pipe(robot);
  ```

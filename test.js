@@ -1,6 +1,6 @@
 var assert = require('assert');
 var say = require('./index.js');
-var Say = require('./index.js').Say;
+var Say = require('./index.js');
 var promptly = require('promptly');
 
 
